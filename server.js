@@ -14,7 +14,20 @@ app.listen(HTTP_PORT, () => {
 });
 
 app.use(express.static('public'))
-
+app.get("/messages/", (req, res, next) => {
+  var sql = "select * from messages"
+  var params = []
+  db.all(sql, params, (err, rows) => {
+      if (err) {
+        res.status(400).json({"error":err.message});
+        return;
+      }
+      res.json({
+          "message":"success",
+          "data":rows
+      })
+    });
+});
 
 // Root path
 app.get("/", (req, res, next) => {
